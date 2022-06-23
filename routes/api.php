@@ -35,7 +35,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::delete('grupo/{id}', [GrupoController::class, 'delete']);
     // fim do grupo
 
-
+    // cidade
     Route::get('cidade', [CidadeController::class, 'index']);
+    Route::post('cidade', [CidadeController::class, 'create']);
+    Route::get('cidade/{cidade}', [CidadeController::class, 'show']);
+    Route::put('cidade/{id}', [CidadeController::class, 'update']);
+    Route::delete('cidade/{id}', [CidadeController::class, 'delete']);
+    // fim da cidade
 
 });

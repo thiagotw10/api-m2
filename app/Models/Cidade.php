@@ -11,4 +11,5 @@ class Cidade extends Model
     protected $fillable = [
         'grupo_id', 'cidade'
     ];
+
 }

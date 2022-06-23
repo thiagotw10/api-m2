@@ -10,8 +10,9 @@ use PhpParser\Node\Expr\FuncCall;
 class GrupoController extends Controller
 {
 
-    public function index(){
-       return Grupo::paginate();
+    public function index(Request $request){
+
+       return Grupo::with(['cidades'])->paginate($request->limit);
     }
 
     public function create(GrupoValidation $request){
@@ -26,8 +27,8 @@ class GrupoController extends Controller
 
     public function show($id){
 
-        $grupo = Grupo::find($id);
-        $response = ($grupo != null)? response($grupo, 200) : response(['status' => 'Grupo não existe'], 400);
+        $grupo = Grupo::with(['cidades'])->find($id);
+        $response = ($grupo != null)? response($grupo, 200) : response(['status' => 'Grupo não existe'], 404);
 
         return $response;
     }
@@ -36,7 +37,7 @@ class GrupoController extends Controller
 
         $grupo = Grupo::find($id);
 
-        $response = ($grupo != null) ? response(['update' => $grupo->update(['grupo' => $request->grupo ])], 200) : response(['status' => 'Grupo não encontrado.'], 400);
+        $response = ($grupo != null) ? response(['update' => $grupo->update(['grupo' => $request->grupo ])], 200) : response(['status' => 'Grupo não encontrado.'], 404);
 
 
 
@@ -48,7 +49,7 @@ class GrupoController extends Controller
     public function delete($id){
         $grupo = Grupo::find($id);
 
-        $response = ($grupo != null)? response(['deletado' => $grupo->delete(), 'status' => 'Grupo deletado com sucesso!!'], 200) : response(['status' => 'Grupo não existe!!'], 400);
+        $response = ($grupo != null)? response(['deletado' => $grupo->delete(), 'status' => 'Grupo deletado com sucesso!!'], 200) : response(['status' => 'Grupo não existe!!'], 404);
 
 
         return $response;

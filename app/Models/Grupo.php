@@ -11,4 +11,8 @@ class Grupo extends Model
     protected $fillable = [
          'grupo'
     ];
+
+    public function cidades(){
+        return $this->hasMany(Cidade::class, 'grupo_id');
+    }
 }

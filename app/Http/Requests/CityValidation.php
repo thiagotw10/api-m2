@@ -13,7 +13,7 @@ class CityValidation extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,17 @@ class CityValidation extends FormRequest
     public function rules()
     {
         return [
-            //
+            'cidade' => 'required|unique:cidades',
+            'grupo' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'cidade.required' => 'Campo cidade é obrigátorio.',
+            'cidade.unique' => 'Essa cidade já existe.',
+            'grupo.required' => 'Campo grupo é obrigátirio.'
         ];
     }
 }
