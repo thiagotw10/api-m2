@@ -15,7 +15,12 @@ class CreateCampanhasTable extends Migration
     {
         Schema::create('campanhas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('grupo_id');
+            $table->string('campanha');
+            $table->string('status');
             $table->timestamps();
+
+            $table->foreign('grupo_id')->references('id')->on('grupos')->onDelete('cascade');
         });
     }
 

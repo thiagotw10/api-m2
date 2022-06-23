@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\CityController;
+use App\Http\Controllers\GrupoController;
+use App\Http\Controllers\CidadeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,15 @@ Route::post('register', [ApiController::class, 'register']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
-    Route::get('city', [CityController::class, 'index']);
+    // grupo
+    Route::get('grupo', [GrupoController::class, 'index']);
+    Route::post('grupo', [GrupoController::class, 'create']);
+    Route::get('grupo/{id}', [GrupoController::class, 'show']);
+    Route::put('grupo/{id}', [GrupoController::class, 'update']);
+    Route::delete('grupo/{id}', [GrupoController::class, 'delete']);
+    // fim do grupo
+
+
+    Route::get('cidade', [CidadeController::class, 'index']);
 
 });
