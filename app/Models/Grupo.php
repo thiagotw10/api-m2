@@ -15,4 +15,7 @@ class Grupo extends Model
     public function cidades(){
         return $this->hasMany(Cidade::class, 'grupo_id');
     }
+    public function campanhas(){
+        return $this->hasMany(Campanha::class, 'grupo_id');
+    }
 }

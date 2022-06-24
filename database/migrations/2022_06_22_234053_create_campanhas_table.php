@@ -17,6 +17,8 @@ class CreateCampanhasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('grupo_id');
             $table->string('campanha');
+            $table->longText('descricao');
+            $table->longText('url_imagem');
             $table->string('status');
             $table->timestamps();
 
