@@ -12,4 +12,8 @@ class Campanha extends Model
     protected $fillable = [
         'grupo_id', 'campanha', 'status', 'descricao', 'url_imagem'
     ];
+
+    public function produtos(){
+        return $this->hasMany(Produto::class, 'campanha_id');
+    }
 }

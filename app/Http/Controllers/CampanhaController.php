@@ -12,7 +12,7 @@ class CampanhaController extends Controller
 {
     public function index(Request $request){
 
-        return Campanha::paginate($request->limit);
+        return Campanha::with('produtos')->paginate($request->limit);
      }
 
      public function create(CampanhaValidation $request){
@@ -56,7 +56,7 @@ class CampanhaController extends Controller
 
      public function show($value){
 
-         $campanhas = Campanha::where('campanha', 'LIKE', $value.'%')->get();
+         $campanhas = Campanha::with('produtos')->where('campanha', 'LIKE', $value.'%')->get();
          $campanha = $campanhas;
          $response = (isset($campanha[0]) != null)? response($campanha, 200) : response(['status' => 'campanha não existe'], 404);
 
@@ -95,7 +95,7 @@ class CampanhaController extends Controller
                 'grupo_id' => ($grupoId) ? $grupoId : $campanha->grupo_id
             ]);
 
-            $response = response(['update' => $update ], 200);
+            $response = response(['success' => $update, 'update' => $campanha ], 200);
 
         }else{
             $response = response(['status' => 'Id não encontrado.'], 404);

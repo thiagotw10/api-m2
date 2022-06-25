@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\CidadeController;
+use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\CampanhaController;
 
 /*
@@ -51,5 +52,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::put('campanha/{id}', [CampanhaController::class, 'update']);
     Route::delete('campanha/{id}', [CampanhaController::class, 'delete']);
     // fim da campanha
+
+     // campanha
+     Route::get('produto', [ProdutoController::class, 'index']);
+     Route::post('produto', [ProdutoController::class, 'create']);
+     Route::get('produto/{produto}', [ProdutoController::class, 'show']);
+     Route::put('produto/{id}', [ProdutoController::class, 'update']);
+     Route::delete('produto/{id}', [ProdutoController::class, 'delete']);
+     // fim da campanha
 
 });

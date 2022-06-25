@@ -56,7 +56,7 @@ class CidadeController extends Controller
                 return response(['status' => 'Grupo não existe.','grupos_disponiveis' => Grupo::all('grupo')], 406);
             }
 
-            $response = response(['update' => $cidade->update(['cidade' => $request->cidade, 'grupo_id' => $grupoId ])], 200);
+            $response = response(['success' => $cidade->update(['cidade' => $request->cidade, 'grupo_id' => $grupoId]), 'update' => $cidade], 200);
 
         }else{
             $response = response(['status' => 'Id não encontrado.'], 404);

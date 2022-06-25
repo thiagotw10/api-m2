@@ -37,7 +37,7 @@ class GrupoController extends Controller
 
         $grupo = Grupo::find($id);
 
-        $response = ($grupo != null) ? response(['update' => $grupo->update(['grupo' => $request->grupo ])], 200) : response(['status' => 'Grupo não encontrado.'], 404);
+        $response = ($grupo != null) ? response(['success' => $grupo->update(['grupo' => $request->grupo ]), 'update' => $grupo], 200) : response(['status' => 'Grupo não encontrado.'], 404);
 
 
 
