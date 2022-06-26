@@ -12,7 +12,7 @@ class ProdutoController extends Controller
 {
     public function index(Request $request){
 
-        return Produto::paginate($request->limit);
+        return Produto::with('descontos')->paginate($request->limit);
      }
 
      public function create(ProdutoValidation $request){
@@ -37,7 +37,7 @@ class ProdutoController extends Controller
 
      public function show($value){
 
-         $produto = Produto::where('produto', 'LIKE', $value.'%')->get();
+         $produto = Produto::with(['descontos' => function($val){return $val->where('status', 'Ativo');}])->where('produto', 'LIKE', $value.'%')->get();
          $produtos = $produto;
          $response = (isset($produtos[0]) != null)? response($produtos, 200) : response(['status' => 'produto não existe'], 404);
 

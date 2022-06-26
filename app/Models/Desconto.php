@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Desconto extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'produto_id', 'cupom', 'status', 'valor_desconto_porcentagem'
+    ];
 }

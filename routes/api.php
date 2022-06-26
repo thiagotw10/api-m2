@@ -7,6 +7,7 @@ use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\CidadeController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\CampanhaController;
+use App\Http\Controllers\DescontoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,12 +54,21 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::delete('campanha/{id}', [CampanhaController::class, 'delete']);
     // fim da campanha
 
-     // campanha
+     // produto
      Route::get('produto', [ProdutoController::class, 'index']);
      Route::post('produto', [ProdutoController::class, 'create']);
      Route::get('produto/{produto}', [ProdutoController::class, 'show']);
      Route::put('produto/{id}', [ProdutoController::class, 'update']);
      Route::delete('produto/{id}', [ProdutoController::class, 'delete']);
-     // fim da campanha
+     // fim de produto
+
+      // cupom de desconto
+      Route::get('desconto', [DescontoController::class, 'index']);
+      Route::post('desconto', [DescontoController::class, 'create']);
+      Route::get('desconto/{cupom}', [DescontoController::class, 'show']);
+      Route::put('desconto/{id}', [DescontoController::class, 'update']);
+      Route::delete('desconto/{id}', [DescontoController::class, 'delete']);
+      // fim de cupom
+
 
 });
