@@ -27,7 +27,7 @@ class GrupoController extends Controller
 
     public function show($id){
 
-        $grupo = Grupo::with('cidades')->with(['campanhas' => function($q){ return $q->where('status', 'Ativo');}])->find($id);
+        $grupo = Grupo::with('cidades')->with(['campanhas' => function($q){ return $q->where('status', 'Ativo');}, 'produtos'])->find($id);
         $response = ($grupo != null)? response($grupo, 200) : response(['status' => 'Grupo não existe'], 404);
 
         return $response;

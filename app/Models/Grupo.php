@@ -18,4 +18,8 @@ class Grupo extends Model
     public function campanhas(){
         return $this->hasMany(Campanha::class, 'grupo_id');
     }
+
+    public function produtos(){
+        return $this->hasMany(Produto::class, 'campanha_id');
+    }
 }
