@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DescontoPutValidation;
 use App\Models\Produto;
 use App\Models\Desconto;
 use Illuminate\Http\Request;
@@ -45,12 +46,12 @@ class DescontoController extends Controller
         $desconto = Desconto::create([
              'produto_id' => $produtoId,
              'cupom' => $request->cupom,
-             'valor_desconto_porcentagem' => $request->porcentagem_desconto,
+             'valor_desconto_porcentagem' => $request->valor_desconto_porcentagem,
              'status' => $status,
         ]);
 
         if($status == 'Ativo'){
-            $descontoPorcentagem = ($precoProduto * $request->porcentagem_desconto)/100;
+            $descontoPorcentagem = ($precoProduto * $request->valor_desconto_porcentagem)/100;
             $descontoPorcentagemTotal =  $precoProduto - $descontoPorcentagem;
 
             $produtoDesconto = Produto::find($produtoId);
@@ -72,19 +73,57 @@ class DescontoController extends Controller
          return $response;
      }
 
-     public function update(DescontoValidation $request, $id){
+     public function update(DescontoPutValidation $request, $id){
 
-        $cidade = Desconto::find($id);
-        if($cidade != null){
+        $desconto = Desconto::find($id);
+        $status = ucfirst($request->status);
 
-            $grupo =  DB::table('grupos')->where('grupo', $request->grupo)->get();
-            if(isset($grupo[0]->id) != null){
-                $grupoId = $grupo[0]->id;
+        if($desconto != null){
+
+            $produto =  DB::table('produtos')->where('produto', $request->produto)->get();
+            if(isset($produto[0]->id) != null){
+                $produtoId = $produto[0]->id;
+                $precoProduto = $produto[0]->preco;
             }else{
-                return response(['status' => 'Grupo não existe.','grupos_disponiveis' => Produto::all('grupo')], 406);
+                return response(['status' => 'Produto não existe.','produtos_disponiveis' => Produto::all('produto')], 406);
             }
 
-            $response = response(['success' => $cidade->update(['cidade' => $request->cidade, 'grupo_id' => $grupoId]), 'update' => $cidade], 200);
+
+            if((isset($status) != 'Ativo') && (isset($status) != 'Desativado')){
+                return response(["status" => "O campo status só pode ser 'Ativo' ou 'Desativado'."], 406);
+            }
+
+            if($status == 'Ativo'){
+                    $campanhas = Desconto::where('status', 'Ativo')->get();
+                    if(isset($campanhas[0])){
+                        $campanhas[0]->update([
+                            'status' => 'Desativado'
+                            ]);
+                    }
+
+            }
+
+            $updateDesconto = $desconto->update([
+                'produto_id' => ($produtoId) ? $produtoId : $desconto->produto_id,
+                'cupom' => ($request->cupom) ? $request->cupom : $desconto->cupom,
+                'valor_desconto_porcentagem' => ($request->valor_desconto_porcentagem) ? $request->valor_desconto_porcentagem : $desconto->valor_desconto_porcentagem,
+                'status' => ($status) ? $status : $desconto->status,
+            ]);
+
+
+            if((isset($status) == 'Ativo') || ($desconto->status == 'Ativo')){
+                $descontoPorcentagem = ($precoProduto * $request->valor_desconto_porcentagem)/100;
+                $descontoPorcentagemTotal =  $precoProduto - $descontoPorcentagem;
+
+                $produtoDesconto = Produto::find($produtoId);
+                $produtoDesconto->update([
+                    'preco_desconto' => $descontoPorcentagemTotal
+                ]);
+            }
+
+
+
+            $response = response(['success' => $updateDesconto, 'update' => $desconto], 200);
 
         }else{
             $response = response(['status' => 'Id não encontrado.'], 404);

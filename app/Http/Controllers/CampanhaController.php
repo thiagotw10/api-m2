@@ -77,7 +77,11 @@ class CampanhaController extends Controller
                 return response(['status' => 'Grupo não existe.','grupos_disponiveis' => Grupo::all('grupo')], 406);
             }
 
-            if($status == 'Ativo'){
+            if((isset($status) != 'Ativo') && (isset($status) != 'Desativado')){
+                return response(["status" => "O campo status só pode ser 'Ativo' ou 'Desativado'."], 406);
+           }
+
+            if(isset($status) == 'Ativo'){
                 $campanhas = Campanha::where('status', 'Ativo')->get();
                 if(isset($campanhas[0])){
                     $campanhas[0]->update([

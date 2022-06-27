@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProdutoPutValidation;
 use App\Models\Produto;
 use App\Models\Campanha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProdutoValidation;
+use App\Models\Desconto;
 
 class ProdutoController extends Controller
 {
@@ -44,9 +46,12 @@ class ProdutoController extends Controller
          return $response;
      }
 
-     public function update(Request $request, $id){
+     public function update(ProdutoPutValidation $request, $id){
 
         $produto = Produto::find($id);
+        $preco = $request->preco;
+        $DescontoTotal = false;
+
         if($produto != null){
 
             $campanha =  DB::table('campanhas')->where('campanha', $request->campanha)->get();
@@ -56,10 +61,23 @@ class ProdutoController extends Controller
                 return response(['status' => 'Campanha não existe.','campanhas_disponiveis' => Campanha::all('campanha')], 406);
             }
 
+
+            if($preco){
+                $desconto = DB::table('descontos')->where('status', 'Ativo')->get();
+                if(isset($desconto[0])){
+                    $valorDesconto = $desconto[0]->valor_desconto_porcentagem;
+                    $updateDesconto = ($valorDesconto * $preco)/100;
+                    $DescontoTotal = $preco - $updateDesconto;
+                }
+            }
+
+
+
             $updateProduto = $produto->update([
                 'produto' => ($request->produto) ? $request->produto : $produto->produto,
                 'preco' => ($request->preco) ? $request->preco : $produto->preco,
-                'campanha_id' => $campanhaId
+                'campanha_id' => $campanhaId,
+                'preco_desconto' => ($DescontoTotal) ? $DescontoTotal : $produto->preco_desconto,
             ]);
 
             $response = response(['success' => $updateProduto, 'update' => $produto], 200);

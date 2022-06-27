@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DescontoValidation extends FormRequest
+class DescontoPutValidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,21 +24,17 @@ class DescontoValidation extends FormRequest
     public function rules()
     {
         return [
-            'cupom' => 'required|unique:descontos',
-            'produto' => 'required',
-            'valor_desconto_porcentagem' => 'required|integer|min: 1|max: 100',
-            'status' => 'required'
+            'cupom' => 'unique:descontos',
+            'porcentagem_desconto' => 'integer | min: 1 | max: 100'
         ];
     }
-
 
     public function messages()
     {
         return [
-            'cupom.required' => 'Campo cupom é obrigátorio.',
             'cupom.unique' => 'Esse cupom já existe.',
-            'status.required' => 'Campo status é obrigátorio.',
-            'valor_desconto_porcentagem.required' => 'Campo porcentagem_desconto é obrigátorio.',
+            'valor_desconto_porcentagem.max' => 'O valor máximo desse campo é de 100%.',
+            'valor_desconto_porcentagem.min' => 'O valor minimo desse campo é de 1%.',
         ];
     }
 }
