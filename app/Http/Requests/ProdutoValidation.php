@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CityValidation extends FormRequest
+class ProdutoValidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,19 @@ class CityValidation extends FormRequest
     public function rules()
     {
         return [
-            'cidade' => 'required|unique:cidades',
-            'grupo' => 'required'
+            'produto' => 'required|unique:produtos',
+            'preco' => 'required',
+            'campanha' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'cidade.required' => 'Campo cidade é obrigátorio.',
-            'cidade.unique' => 'Essa cidade já existe.',
-            'grupo.required' => 'Campo grupo é obrigátirio.'
+            'produto.required' => 'Campo produto é obrigátorio.',
+            'produto.unique' => 'Esse produto já existe.',
+            'preco.required' => 'Campo preço é obrigátorio.',
+            'campanha.required' => 'Campo campanha é obrigátorio.',
         ];
     }
 }

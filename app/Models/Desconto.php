@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Desconto extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'nome'
+        'produto_id', 'cupom', 'status', 'valor_desconto_porcentagem'
     ];
 }

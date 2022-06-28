@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CityValidation extends FormRequest
+class DescontoPutValidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,17 @@ class CityValidation extends FormRequest
     public function rules()
     {
         return [
-            'cidade' => 'required|unique:cidades',
-            'grupo' => 'required'
+            'cupom' => 'unique:descontos',
+            'porcentagem_desconto' => 'integer | min: 1 | max: 100'
         ];
     }
 
     public function messages()
     {
         return [
-            'cidade.required' => 'Campo cidade é obrigátorio.',
-            'cidade.unique' => 'Essa cidade já existe.',
-            'grupo.required' => 'Campo grupo é obrigátirio.'
+            'cupom.unique' => 'Esse cupom já existe.',
+            'valor_desconto_porcentagem.max' => 'O valor máximo desse campo é de 100%.',
+            'valor_desconto_porcentagem.min' => 'O valor minimo desse campo é de 1%.',
         ];
     }
 }
